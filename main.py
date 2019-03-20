@@ -17,3 +17,56 @@
 #  	CERTIFICATION:	 I	certify	that	this	work	is	my	own	and	that
 #  																															 none	of	it	is	the	work	of	any	other	person.
 #  =============================================================================
+import random 
+
+class NormalForm():
+
+    def __init__(self, mode, rows, columns, lower_limit=-99, upper_limit=99):
+        self.rows = rows
+        self.columns = columns
+        self.mode = mode.lower()
+        self.lower_limit = lower_limit
+        self.upper_limit = upper_limit
+        self.nf = [[ (0,0) for i in range(self.columns)] for j in range(self.rows)]
+
+    def print_normal_form(self):
+        columns = "\t"
+        for i in range(self.columns):
+            columns += f"B{i + 1}\t\t\t"
+        print(columns)
+        r = 1
+        for row in self.nf:
+            row_string = f"A{r}\t"
+            for c in row:
+                row_string += f"{c}\t\t"
+            r += 1
+            print(row_string)
+
+    def add_payoffs(self):
+        r = 0 # this is just a counter for displaying the cells in the normal form as A1, A2, ...
+        for row in self.nf:
+            c = 0
+            for column in row:
+                if self.mode == 'r':
+                    p1 = random.randint(self.lower_limit, self.upper_limit)
+                    p2 = random.randint(self.lower_limit, self.upper_limit)
+                    self.nf[r][c] = (p1, p2)
+                elif self.mode == 'm':
+                    payoff = input(f"Enter payoff for ( A{r + 1}, B{c + 1} ) = ")
+                    values = payoff.split(',')
+                    self.nf[r][c] = (int(values[0]), int(values[1]))
+                else:
+                    raise ValueError
+                c += 1
+            r += 1
+
+
+
+# First we need to ask the user if the mode is Random or Manual
+mode = input('Enter (R)andom or (M)anual payoffs enteries\n')
+rows = input('Enter the number of rows: ')
+columns = input('Enter the number of cols: ')
+
+test_normal_form = NormalForm(mode, int(rows), int(columns))
+test_normal_form.add_payoffs()
+test_normal_form.print_normal_form()
