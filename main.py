@@ -28,6 +28,40 @@ class NormalForm():
         self.lower_limit = lower_limit
         self.upper_limit = upper_limit
         self.nf = [[ (0,0) for i in range(self.columns)] for j in range(self.rows)]
+    
+    def print_payoffs(self, player):
+        payoffs = ""
+        if player == 1:
+           for rows in self.nf:
+                for col in rows:
+                    payoffs += str(col[0]) + " "
+        elif player == 2:
+            for rows in self.nf:
+                for col in rows:
+                    payoffs += str(col[1]) + " "
+        else:
+            raise ValueError("There are only two players")
+        print(payoffs)
+
+    def print_strategies(self, player):
+        # player 1 are rows and player 2 are the columns
+        strategies = "{"
+        if player == 1:
+            for i in range(self.rows):
+                if i == self.rows - 1:
+                    strategies += f"A{i + 1}"
+                else:
+                    strategies += f"A{i + 1}, "
+        elif player == 2:
+            for i in range(self.columns):
+                if i == self.columns - 1:
+                    strategies += f"B{i + 1}"
+                else:
+                    strategies += f"B{i + 1}, "
+        else:
+            raise ValueError("There are only 2 players")
+        strategies += "}"
+        print(strategies)
 
     def print_normal_form(self):
         columns = "\t"
@@ -70,3 +104,7 @@ columns = input('Enter the number of cols: ')
 test_normal_form = NormalForm(mode, int(rows), int(columns))
 test_normal_form.add_payoffs()
 test_normal_form.print_normal_form()
+test_normal_form.print_strategies(player=1)
+test_normal_form.print_payoffs(1)
+test_normal_form.print_strategies(player=2)
+test_normal_form.print_payoffs(2)
