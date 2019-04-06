@@ -1,4 +1,4 @@
-import random 
+import random
 
 class NormalForm():
 
@@ -19,11 +19,11 @@ class NormalForm():
         self.lower_limit = lower_limit
         self.upper_limit = upper_limit
         self.grid = [[ (0,0) for i in range(self.columns)] for j in range(self.rows)] # a list of lists for the rows and columns in the normal form
+        self.grid_pure_nash = [[(0, 0) for i in range(self.columns)] for j in range(self.rows)]
         self.nash_equilibria = [] # a list of tuples that represent the x and y coordinates each nash equilibrium
-        self.p1_br = [] # the set of best responses for player 1 
-        self.p2_br = [] # the set of best responses for player 2 
-        
-    
+        self.p1_br = [] # the set of best responses for player 1
+        self.p2_br = [] # the set of best responses for player 2
+
     # We need to fix the format in this function. 
     def print_payoffs(self, player):
         payoffs = ""
@@ -33,7 +33,7 @@ class NormalForm():
            for rows in self.grid:
                 for col in rows:
                     if count == num_rows:
-                       payoffs += str(col[0]) + "\n" 
+                       payoffs += str(col[0]) + "\n"
                        count = 0
                     else:
                         payoffs += str(col[0]) + " "
@@ -42,7 +42,7 @@ class NormalForm():
             for rows in self.grid:
                 for col in rows:
                     if count == num_rows:
-                        payoffs += str(col[1]) + "\n" 
+                        payoffs += str(col[1]) + "\n"
                         count = 0
                     else:
                         payoffs += str(col[1]) + " "
@@ -93,17 +93,19 @@ class NormalForm():
                     p1 = random.randint(self.lower_limit, self.upper_limit)
                     p2 = random.randint(self.lower_limit, self.upper_limit)
                     self.grid[r][c] = (p1, p2)
+                    self.grid_pure_nash[r][c] = (p1, p2)
                 elif self.mode == 'm':
                     payoff = input(f"Enter payoff for ( A{r + 1}, B{c + 1} ) = ")
                     values = payoff.split(',')
                     self.grid[r][c] = (int(values[0]), int(values[1]))
+                    self.grid_pure_nash[r][c] = (int(values[0]), int(values[1]))
                 else:
                     raise ValueError
                 c += 1
             r += 1
 
     # Maybe use for i in range(self.row) instead of for l in self.grid
-    def find_br_opm(self, player, mixing=False, beliefs=None):
+    def find_br(self, player, mixing=False, beliefs=None):
         """ Finds all the best responses of the specified player. This function only supports 
             the scenario where one player uses a mixed strategy and the other player plays a pure strategy.
             br stands for best responses and opm stands for one player mixing. Later we will have to make a function for both players mixing (bpm?)
@@ -117,7 +119,7 @@ class NormalForm():
         """
         if (player is not 1) and (player is not 2):
             raise ValueError("player must be an int with the value of 1 or 2")
-        if not mixing:  
+        if not mixing:
             if player is 1:
                 for i in range(self.columns):
                     br_coordinates = best = None
@@ -141,10 +143,13 @@ class NormalForm():
                         multiple_br_values.append(br_coordinates)
 
                     for coordinates in multiple_br_values:
-                        c = self.grid[coordinates[1]][coordinates[0]]
-                        self.grid[coordinates[1]][coordinates[0]] = ('H', c[1])
-
-                    self.p1_br += multiple_br_values
+                        c = self.grid_pure_nash[coordinates[1]][coordinates[0]]
+                        self.grid_pure_nash[coordinates[1]][coordinates[0]] = ('H', c[1])
+                    for value in multiple_br_values:
+                        if value in self.p1_br:
+                            continue
+                        else:
+                            self.p1_br.append(value)
                 return self.p1_br
             elif player is 2:
                 counter = 0
@@ -166,25 +171,24 @@ class NormalForm():
                         multiple_br_values.append(br_coordinates)
 
                     for coordinates in multiple_br_values:
-                        c = self.grid[coordinates[1]][coordinates[0]]
-                        self.grid[coordinates[1]][coordinates[0]] = (c[0], 'H')
-                    self.p2_br += multiple_br_values
+                        c = self.grid_pure_nash[coordinates[1]][coordinates[0]]
+                        self.grid_pure_nash[coordinates[1]][coordinates[0]] = (c[0], 'H')
+                    for value in multiple_br_values:
+                        if value in self.p2_br:
+                            continue
+                        else:
+                            self.p2_br.append(value)
                 return self.p2_br
-
         else:
             if player is 1:
-                for l in self.grid:
+                for i in range(self.rows):
                     result = 0
-                    counter = 0
-                    result_string = ""
-                    for cell in l:
-                        result += beliefs[counter] * cell[player-1] 
-                        result_string += f"({beliefs[counter]} * {cell[player-1] })"
-                        if counter != len(l)-1:
-                            result_string += ' + '
-                        counter += 1
-                    print(f"A{counter + 1} : {result_string} = {result}")
-                    return []
+                    result_string = ''
+                    for j in range(self.columns):
+                        result += beliefs[j] * self.grid[i][j][player - 1]
+                        result_string += f"({beliefs[j]} * {self.grid[i][j][player - 1]})"
+                    print(f"A{i + 1}: {result_string} = {result}")
+                return []
             elif player is 2:
                 for i in range(self.columns):
                     counter = 0
@@ -196,8 +200,89 @@ class NormalForm():
                         result += b * p2_payoff
                         result_string += f"({b} * {p2_payoff}) "
                         counter += 1
-                    print(f"B {i + 1} : {result_string} = {result}")
+                    print(f"B{i + 1} : {result_string} = {result}")
+                return []
+
+    def find_pure_nash_equi(self):
+        player1 = self.find_br(player=1)
+        player2 = self.find_br(player=2)
+        self.nash_equilibria = [value for value in player1 if value in player2]
+        return self.nash_equilibria
+
+    def print_pure_nash(self):
+        columns = "\t"
+        for i in range(self.columns):
+            columns += f"B{i + 1}\t\t\t"
+        print(columns)
+        r = 1
+        for row in self.grid_pure_nash:
+            row_string = f"A{r}\t"
+            for c in row:
+                row_string += f"{c}\t\t"
+            r += 1
+            print(row_string)
+
+    def ep_bpm(self, p1_beliefs, p2_beliefs):
+        # We need to create another grid with the product of the beliefsf
+        beliefs = []
+        for i in range(self.rows):
+            row = []
+            for j in range(self.columns):
+                row.append(p1_beliefs[i] * p2_beliefs[j])
+            beliefs.append(row)
+        # Now we need to do some kind of matrix multiplication between beliefs and self.grid
+        # We start with player 1
+        p1_ep = 0
+        for i in range(self.rows):
+            for j in range(self.columns):
+                x = beliefs[i][j]
+                y = self.grid[i][j][0]
+                p1_ep += x * y
+
+        p2_ep = 0
+        for i in range(self.rows):
+            for j in range(self.columns):
+                p2_ep += beliefs[i][j] * self.grid[i][j][1]
+        return p1_ep, p2_ep
+
+    def get_indifference_probabilities(self):
+        if len(self.nash_equilibria) > 0:
+            print("Normal Form has Pure Strategy Equilibrium")
+        else:
+            # Starting with player 1. We need to find a strategy that makes player 2 indiferent
+            # we can make a formula to find p
+            #   p  | (?, x) | (?, z) |
+            #      |--------|--------|
+            #  1-p | (?, y) | (?, w) |
+            # Now to make the expected payoff of player 2 the same regardless of the strategy that he plays 
+            #   p(x) + (1-p)(y) = p(z) + (1-p)(w)
+            #       px + y - yp = pz + w - wp
+            # px - py + wp - pz = w - y 
+            #  p(x - y + w - z) = w - y
+            #                 p = (w - y) / (x - y + w - z)
+            x = self.grid[0][0][1]
+            y = self.grid[1][0][1] 
+            z = self.grid[0][1][1] 
+            w = self.grid[1][1][1] 
+            p = (w - y) / (x - y + w - z)
+            p1_strategy = [p, 1-p]
+            # We can make a similar case with player 2 
+            #           q       1-q
+            #   p  | (x, ?) | (z, ?) |
+            #      |--------|--------|
+            #  1-p | (y, ?) | (w, ?) |
+            # q(x) + (1-q)(z) = q(y) + (1-q)(w)
+            #     qx + z - qz = qy + w - qw
+            #                ...
+            #               q = (w - z) / (x - z - y + w)
+            x = self.grid[0][0][0]
+            y = self.grid[1][0][0] 
+            z = self.grid[0][1][0] 
+            w = self.grid[1][1][0] 
+            q = (w - z) / (x - y + w - z)
+            p2_strategy = [q, 1-q]
+            return [p1_strategy, p2_strategy]
 
 
-            return []
+
 

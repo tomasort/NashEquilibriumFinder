@@ -18,6 +18,8 @@
 #  	CERTIFICATION:	 I	certify	that	this	work	is	my	own	and	that
 #  																															 none	of	it	is	the	work	of	any	other	person.
 #  =============================================================================
+
+
 from normal_form.NormalForm import NormalForm
 
 # First we need to ask the user if the mode is Random or Manual
@@ -36,16 +38,38 @@ test_normal_form.print_payoffs(2)
 
 print("Testing Pure strategies\n\n")
 
-test_normal_form.find_br_opm(player=1, mixing=False)
-test_normal_form.find_br_opm(player=2, mixing=False)
+test_normal_form.find_br(player=1, mixing=False)
+test_normal_form.find_br(player=2, mixing=False)
 test_normal_form.print_normal_form()
 
 # Testing Mixing strategies
 
-# print("Testing Mix strategies\n\n")
+print("Testing Mix strategies\n\n")
 
-# test_normal_form = NormalForm('R', rows=5, columns=2)
-# test_normal_form.add_payoffs()
-# test_normal_form.print_normal_form()
-# test_normal_form.find_br_opm(player=1, mixing=True, beliefs=[1/6, 1/3, 1/2])
-# test_normal_form.find_br_opm(player=2, mixing=True, beliefs=[1/6, 1/3, 1/2])
+test_normal_form = NormalForm('R', rows=3, columns=3)
+test_normal_form.add_payoffs()
+test_normal_form.print_normal_form()
+test_normal_form.find_br(player=1, mixing=True, beliefs=[1/6, 1/3, 1/2])
+test_normal_form.find_br(player=2, mixing=True, beliefs=[1/6, 1/3, 1/2])
+
+
+print("Testing Nash eq")
+test_normal_form.find_br(player=1, mixing=False)
+test_normal_form.find_br(player=2, mixing=False)
+test_normal_form.print_pure_nash()
+x = test_normal_form.find_pure_nash_equi()
+print(x)
+
+print("Testing both Players Mixing")
+test_normal_form = NormalForm('R', rows=3, columns=3)
+test_normal_form.add_payoffs()
+test_normal_form.ep_bpm([1/6, 1/3, 1/2], [1/6, 1/3, 1/2])
+
+
+print("Testing Indiference")
+test_normal_form = NormalForm('R', rows=2, columns=2)
+test_normal_form.add_payoffs()
+x = test_normal_form.get_indifference_probabilities()
+print(x)
+test_normal_form.find_br(player=1, mixing=True, beliefs=x[1])
+test_normal_form.find_br(player=2, mixing=True, beliefs=x[0])
