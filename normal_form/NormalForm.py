@@ -266,6 +266,7 @@ class NormalForm():
             w = self.grid[1][1][1] 
             p = (w - y) / (x - y + w - z)
             p1_strategy = [p, 1-p]
+
             # We can make a similar case with player 2 
             #           q       1-q
             #   p  | (x, ?) | (z, ?) |
@@ -281,6 +282,7 @@ class NormalForm():
             w = self.grid[1][1][0] 
             q = (w - z) / (x - y + w - z)
             p2_strategy = [q, 1-q]
+            
             return [p1_strategy, p2_strategy]
 
 
