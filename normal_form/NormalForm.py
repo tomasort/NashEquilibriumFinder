@@ -301,9 +301,7 @@ class NormalForm():
         return p1_ep, p2_ep
 
     def get_indifference_probabilities(self):
-        if len(self.nash_equilibria) > 0:
-            print("Normal Form has Pure Strategy Equilibrium")
-        else:
+        if len(self.nash_equilibria) == 0:
             # Starting with player 1. We need to find a strategy that makes player 2 indiferent
             # we can make a formula to find p
             #   p  | (?, x) | (?, z) |
@@ -319,7 +317,13 @@ class NormalForm():
             y = self.grid[1][0][1]
             z = self.grid[0][1][1]
             w = self.grid[1][1][1]
-            p = (w - y) / (x - y + w - z)
+            if (x - y + w - z) != 0:
+                p = (w - y) / (x - y + w - z)
+                if p < 0 or (1-p) < 0:
+                    print("There are negative probabilities. One or more strategies are be dominated")
+            else:
+                print("There is a problem (division by 0). One or more strategies are be dominated")
+                return []
             p1_strategy = [p, 1-p]
 
             # We can make a similar case with player 2
@@ -335,7 +339,13 @@ class NormalForm():
             y = self.grid[1][0][0]
             z = self.grid[0][1][0]
             w = self.grid[1][1][0]
-            q = (w - z) / (x - y + w - z)
+            if (x - y + w - z) != 0:
+                q = (w - z) / (x - y + w - z)
+                if q < 0 or (1-q) < 0:
+                    print("There are negative probabilities. One or more strategies are be dominated")
+            else:
+                print("There is a problem (division by 0). One or more strategies are be dominated")
+                return []
             p2_strategy = [q, 1-q]
 
             return [p1_strategy, p2_strategy]
