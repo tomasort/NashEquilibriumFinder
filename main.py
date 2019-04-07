@@ -125,6 +125,26 @@ print(f"BR({beliefs[1]}) = {br}")
 print('------------------------------------')
 print('Player 1 & 2 Expected Payoffs with both Players Mixing')
 print('------------------------------------')
+eps = test_normal_form.ep_bpm(p1_beliefs=beliefs[0], p2_beliefs=beliefs[1])
+print(f"Player 1 -> U({beliefs[0]}, {beliefs[1]}) = {eps[0]}")
+print(f"Player 2 -> U({beliefs[0]}, {beliefs[1]}) = {eps[1]}")
+
+if rows == 2 and cols == 2:
+    print('------------------------------------')
+    print('Player 1 & 2 Indifferent Mix Probabilities')
+    print('------------------------------------')
+    if len(nash_eq_coordinates) == 0:
+        # we need to find the mixing strategies for the nash eq 
+        probabilities = test_normal_form.get_indifference_probabilities()
+        for i in range(len(probabilities[0])):
+            print(f"Player 1 probability of strategies (A{i + 1}) = {probabilities[0][i]}")
+
+        for i in range(len(probabilities[1])):
+            print(f"Player 2 probability of strategies (B{i + 1}) = {probabilities[1][i]}")
+    else:
+        print("Normal Form has Pure Strategy Equilibrium")
+
+
 
 # Testing Pure strategies
 
