@@ -107,10 +107,11 @@ class NormalForm():
             for c in row:
                 new_value_x = str(c[0])
                 new_value_y = str(c[1])
-                if len(new_value_x) == 1:
-                    new_value_x = new_value_x + " "
-                if len(new_value_y) == 1:
-                    new_value_y = new_value_y + " "
+                
+                while len(new_value_x) < 3:
+                    new_value_x = " "+ new_value_x
+                while len(new_value_y) < 3:
+                    new_value_y = " "+ new_value_y
                 row_string += f"({new_value_x}, {new_value_y})\t\t"
             r += 1
             print(row_string)
@@ -138,6 +139,7 @@ class NormalForm():
                     raise ValueError
                 c += 1
             r += 1
+
 
     # Maybe use for i in range(self.row) instead of for l in self.grid
     def find_br(self, player, mixing=False, beliefs=None):
@@ -281,13 +283,16 @@ class NormalForm():
             for c in row:
                 new_value_x = str(c[0])
                 new_value_y = str(c[1])
-                if len(new_value_x) == 1:
-                    new_value_x = new_value_x + " "
-                if len(new_value_y) == 1:
-                    new_value_y = new_value_y + " "
+
+                while len(new_value_x) < 3:
+                    new_value_x = " "+ new_value_x
+                while len(new_value_y) < 3:
+                    new_value_y = " "+ new_value_y
+                    
                 row_string += f"({new_value_x}, {new_value_y})\t\t"
             r += 1
             print(row_string)
+
 
     def ep_bpm(self, p1_beliefs, p2_beliefs):
         # We need to create another grid with the product of the beliefsf
