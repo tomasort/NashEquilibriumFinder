@@ -67,7 +67,7 @@ class NormalForm():
             for rows in self.grid:
                 for col in rows:
                     if count == num_rows:
-                        payoffs += str(col[1]) + "\n"
+                        payoffs += str(col[1]) + " "
                         count = 0
                     else:
                         payoffs += str(col[1]) + " "
@@ -257,11 +257,11 @@ class NormalForm():
             # Or we can create a random array of numbers, then get the sum and divide every number by the sum
             p1_rand_numbers = [random.random() for i in range(self.rows)]
             s = sum(p1_rand_numbers)
-            p1_beliefs = [i/s for i in p1_rand_numbers]
+            p1_beliefs = [round(i/s, 3) for i in p1_rand_numbers]
 
             p2_rand_numbers = [random.random() for i in range(self.columns)]
             s = sum(p2_rand_numbers)
-            p2_beliefs = [i/s for i in p2_rand_numbers]
+            p2_beliefs = [round(i/s, 3) for i in p2_rand_numbers]
         return [p1_beliefs, p2_beliefs]
 
     def print_pure_nash(self):

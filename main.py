@@ -50,32 +50,30 @@ while True:
 
 test_normal_form = NormalForm(i, rows=rows, columns=cols)
 test_normal_form.add_payoffs()
-print('\n\n')
-print('------------------------------------')
+print('\n')
+print('\n------------------------------------')
 print('Player: Player1\'s strategies')
-print('------------------------------------')
+print('\n------------------------------------')
 test_normal_form.print_strategies(player=1)
-print('------------------------------------')
+print('\n------------------------------------')
 print('Player: Player1\'s payoffs')
 print('------------------------------------')
 test_normal_form.print_payoffs(1) # fix formatting
-print('------------------------------------')
+print('\n------------------------------------')
 print('Player: Player2\'s strategies')
-print('------------------------------------')
+print('\n------------------------------------')
 test_normal_form.print_strategies(player=2)
-print('------------------------------------')
+print('\n------------------------------------')
 print('Player: Player2\'s payoffs')
-print('------------------------------------')
+print('\n------------------------------------')
 test_normal_form.print_payoffs(2)
-print('\n\n')
 
-print("=======================================")
+print("\n=======================================")
 print("Display Normal Form")
 print("=======================================")
 test_normal_form.print_normal_form()
-print('\n\n')
 
-print("=======================================")
+print("\n=======================================")
 print("Nash Pure Equilibrium Locations")
 print("=======================================")
 nash_eq_coordinates = test_normal_form.find_pure_nash_equi()
@@ -83,51 +81,53 @@ test_normal_form.print_pure_nash()
 coordinates = ""
 for c in nash_eq_coordinates:
   coordinates += f"(A{c[1] + 1}, B{c[0] + 1})   "
-print(f"Nash Pure Equilibrium(s): {coordinates}\n")
+print(f"\nNash Pure Equilibrium(s): {coordinates}")
 
 beliefs = test_normal_form.create_random_beliefs(mode='sum')
-print('------------------------------------')
+print('\n------------------------------------')
 print('Player 1 Expected Payoffs with Player 2 Mixing')
 print('------------------------------------')
 p1_eps = test_normal_form.find_br(player=1, mixing=True, beliefs=beliefs[0])
 br = None
 for key, value in p1_eps.items():
-    print(f"U({key}, {beliefs[0]}) = {value}")
+    print(f"U({key}, {beliefs[0]}) = {round(value, 3)}")
     if br == None:
         br = key
     else:
         if p1_eps[br] < value:
             br = key
-print('------------------------------------')
+
+print('\n------------------------------------')
 print('Player 1 Best Response with Player 2 Mixing')
 print('------------------------------------')
 br = "{" + str(br) + "}"
 print(f"BR({beliefs[0]}) = {br}")
 
-print('------------------------------------')
+print('\n------------------------------------')
 print('Player 2 Expected Payoffs with Player 1 Mixing')
 print('------------------------------------')
 p2_eps = test_normal_form.find_br(player=2, mixing=True, beliefs=beliefs[1])
 br = None
 for key, value in p2_eps.items():
-    print(f"U({key}, {beliefs[1]}) = {value}")
+    print(f"U({key}, {beliefs[1]}) = {round(value, 3)}")
     if br == None:
         br = key
     else:
         if p2_eps[br] < value:
             br = key
-print('------------------------------------')
+
+print('\n------------------------------------')
 print('Player 2 Best Response with Player 1 Mixing')
 print('------------------------------------')
 br = "{" + str(br) + "}"
 print(f"BR({beliefs[1]}) = {br}")
 
-print('------------------------------------')
+print('\n------------------------------------')
 print('Player 1 & 2 Expected Payoffs with both Players Mixing')
 print('------------------------------------')
 eps = test_normal_form.ep_bpm(p1_beliefs=beliefs[0], p2_beliefs=beliefs[1])
-print(f"Player 1 -> U({beliefs[0]}, {beliefs[1]}) = {eps[0]}")
-print(f"Player 2 -> U({beliefs[0]}, {beliefs[1]}) = {eps[1]}")
+print(f"Player 1 -> U({beliefs[0]}, {beliefs[1]}) = {round(eps[0], 3)}")
+print(f"Player 2 -> U({beliefs[0]}, {beliefs[1]}) = {round(eps[1], 3)}")
 
 if rows == 2 and cols == 2:
     print('------------------------------------')
@@ -144,7 +144,7 @@ if rows == 2 and cols == 2:
     else:
         print("Normal Form has Pure Strategy Equilibrium")
 
-
+print("\n\n\n")
 
 # Testing Pure strategies
 
