@@ -45,14 +45,14 @@ while True:
   print('Invalid selection')
   
 while True:
-  rows = input("Enter the number of rows (min 0, max 9):\n")
+  rows = input("Enter the number of rows (min 1, max 9):\n")
   rows = int(rows)
   if rows >= 1 and rows <= 9: 
     break
   print('Invalid selection')
 
 while True:
-  cols = input("Enter the number of columns (min 0, max 9):\n")
+  cols = input("Enter the number of columns (min 1, max 9):\n")
   cols = int(cols)
   if cols >= 1 and cols <= 9: 
     break
