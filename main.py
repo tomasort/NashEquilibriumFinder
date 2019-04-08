@@ -27,6 +27,16 @@ from normal_form.NormalForm import NormalForm
 # rows rows input('Encolser the number of rows:rows')
 # columcolss = input('Enter the number of cols: ')
 
+def from_list_to_beliefs(lst):
+  belief = "("
+  for i in range(len(lst)):
+    belief += f"{lst[i]}"
+    if i == len(lst) - 1:
+      belief += ")"
+    else:
+      belief += ", "
+  return belief
+
 while True:
   i = input("Enter (R)andom or (M)anual payoffs enteries:\n")
   if i == 'R' or i == 'M' or i == 'r' or i == 'm':
@@ -90,7 +100,7 @@ print('------------------------------------')
 p1_eps = test_normal_form.find_br(player=1, mixing=True, beliefs=beliefs[1])
 br = None
 for key, value in p1_eps.items():
-    print(f"U({key}, {beliefs[1]}) = {round(value, 3)}")
+    print(f"U({key}, {from_list_to_beliefs(beliefs[1])}) = {round(value, 3)}")
     if br == None:
         br = key
     else:
@@ -101,7 +111,7 @@ print('\n------------------------------------')
 print('Player 1 Best Response with Player 2 Mixing')
 print('------------------------------------')
 br = "{" + str(br) + "}"
-print(f"BR({beliefs[1]}) = {br}")
+print(f"BR({from_list_to_beliefs(beliefs[1])}) = {br}")
 
 print('\n------------------------------------')
 print('Player 2 Expected Payoffs with Player 1 Mixing')
@@ -109,7 +119,7 @@ print('------------------------------------')
 p2_eps = test_normal_form.find_br(player=2, mixing=True, beliefs=beliefs[0])
 br = None
 for key, value in p2_eps.items():
-    print(f"U({key}, {beliefs[0]}) = {round(value, 3)}")
+    print(f"U({key}, {from_list_to_beliefs(beliefs[0])}) = {round(value, 3)}")
     if br == None:
         br = key
     else:
@@ -120,14 +130,14 @@ print('\n------------------------------------')
 print('Player 2 Best Response with Player 1 Mixing')
 print('------------------------------------')
 br = "{" + str(br) + "}"
-print(f"BR({beliefs[1]}) = {br}")
+print(f"BR({from_list_to_beliefs(beliefs[1])}) = {br}")
 
 print('\n------------------------------------')
 print('Player 1 & 2 Expected Payoffs with both Players Mixing')
 print('------------------------------------')
 eps = test_normal_form.ep_bpm(p1_beliefs=beliefs[1], p2_beliefs=beliefs[0])
-print(f"Player 1 -> U({beliefs[0]}, {beliefs[1]}) = {round(eps[0], 3)}")
-print(f"Player 2 -> U({beliefs[0]}, {beliefs[1]}) = {round(eps[1], 3)}")
+print(f"Player 1 -> U({from_list_to_beliefs(beliefs[0])}, {from_list_to_beliefs(beliefs[1])}) = {round(eps[0], 3)}")
+print(f"Player 2 -> U({from_list_to_beliefs(beliefs[0])}, {from_list_to_beliefs(beliefs[1])}) = {round(eps[1], 3)}")
 
 if rows == 2 and cols == 2:
     print('------------------------------------')

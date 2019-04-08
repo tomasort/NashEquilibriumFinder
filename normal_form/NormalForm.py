@@ -52,25 +52,35 @@ class NormalForm():
     # We need to fix the format in this function.
     def print_payoffs(self, player):
         payoffs = ""
-        count = 0
+        count = 1
         num_rows = 7
         if player == 1:
             for rows in self.grid:
                 for col in rows:
+                    value = str(col[0])
+                    if len(value) == 1:
+                        value = "  " + value
+                    elif len(value) == 2:
+                        value = " " + value
                     if count == num_rows:
-                        payoffs += str(col[0]) + "\n"
+                        payoffs += str(value) + "\n"
                         count = 0
                     else:
-                        payoffs += str(col[0]) + " "
-                count += 1
+                        payoffs += str(value) + " "
+                    count += 1
         elif player == 2:
             for rows in self.grid:
                 for col in rows:
+                    value = str(col[1])
+                    if len(value) == 1:
+                        value = "  " + value
+                    elif len(value) == 2:
+                        value = " " + value
                     if count == num_rows:
-                        payoffs += str(col[1]) + " "
+                        payoffs += str(value) + "\n"
                         count = 0
                     else:
-                        payoffs += str(col[1]) + " "
+                        payoffs += str(value) + " "
                     count += 1
         else:
             raise ValueError("There are only two players")
@@ -99,7 +109,7 @@ class NormalForm():
     def print_normal_form(self):
         columns = "\t"
         for i in range(self.columns):
-            columns += f"B{i + 1}\t\t\t"
+            columns += f"    B{i + 1}\t\t\t"
         print(columns)
         r = 1
         for row in self.grid:
@@ -275,7 +285,7 @@ class NormalForm():
     def print_pure_nash(self):
         columns = "\t"
         for i in range(self.columns):
-            columns += f"B{i + 1}\t\t\t"
+            columns += f"    B{i + 1}\t\t\t"
         print(columns)
         r = 1
         for row in self.grid_pure_nash:
