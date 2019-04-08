@@ -1,4 +1,4 @@
-##### cap4506 game theory coding assignment
+# cap4506 game theory coding assignment
 ## by tomas ortega and pablo mueller
    
 #### running the code
