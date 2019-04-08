@@ -90,7 +90,7 @@ print('------------------------------------')
 p1_eps = test_normal_form.find_br(player=1, mixing=True, beliefs=beliefs[1])
 br = None
 for key, value in p1_eps.items():
-    print(f"U({key}, {beliefs[0]}) = {round(value, 3)}")
+    print(f"U({key}, {beliefs[1]}) = {round(value, 3)}")
     if br == None:
         br = key
     else:
@@ -101,7 +101,7 @@ print('\n------------------------------------')
 print('Player 1 Best Response with Player 2 Mixing')
 print('------------------------------------')
 br = "{" + str(br) + "}"
-print(f"BR({beliefs[0]}) = {br}")
+print(f"BR({beliefs[1]}) = {br}")
 
 print('\n------------------------------------')
 print('Player 2 Expected Payoffs with Player 1 Mixing')
@@ -109,7 +109,7 @@ print('------------------------------------')
 p2_eps = test_normal_form.find_br(player=2, mixing=True, beliefs=beliefs[0])
 br = None
 for key, value in p2_eps.items():
-    print(f"U({key}, {beliefs[1]}) = {round(value, 3)}")
+    print(f"U({key}, {beliefs[0]}) = {round(value, 3)}")
     if br == None:
         br = key
     else:
@@ -125,7 +125,7 @@ print(f"BR({beliefs[1]}) = {br}")
 print('\n------------------------------------')
 print('Player 1 & 2 Expected Payoffs with both Players Mixing')
 print('------------------------------------')
-eps = test_normal_form.ep_bpm(p1_beliefs=beliefs[0], p2_beliefs=beliefs[1])
+eps = test_normal_form.ep_bpm(p1_beliefs=beliefs[1], p2_beliefs=beliefs[0])
 print(f"Player 1 -> U({beliefs[0]}, {beliefs[1]}) = {round(eps[0], 3)}")
 print(f"Player 2 -> U({beliefs[0]}, {beliefs[1]}) = {round(eps[1], 3)}")
 

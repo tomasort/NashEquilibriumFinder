@@ -295,7 +295,7 @@ class NormalForm():
         for i in range(self.rows):
             row = []
             for j in range(self.columns):
-                row.append(p1_beliefs[i] * p2_beliefs[j])
+                row.append(p1_beliefs[j] * p2_beliefs[i])
             beliefs.append(row)
         # Now we need to do some kind of matrix multiplication between beliefs and self.grid
         # We start with player 1
