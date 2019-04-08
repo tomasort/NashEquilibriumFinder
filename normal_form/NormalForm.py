@@ -105,7 +105,13 @@ class NormalForm():
         for row in self.grid:
             row_string = f"A{r}\t"
             for c in row:
-                row_string += f"{c}\t\t"
+                new_value_x = str(c[0])
+                new_value_y = str(c[1])
+                if len(new_value_x) == 1:
+                    new_value_x = new_value_x + " "
+                if len(new_value_y) == 1:
+                    new_value_y = new_value_y + " "
+                row_string += f"({new_value_x}, {new_value_y})\t\t"
             r += 1
             print(row_string)
 
@@ -273,7 +279,13 @@ class NormalForm():
         for row in self.grid_pure_nash:
             row_string = f"A{r}\t"
             for c in row:
-                row_string += f"{c}\t\t"
+                new_value_x = str(c[0])
+                new_value_y = str(c[1])
+                if len(new_value_x) == 1:
+                    new_value_x = new_value_x + " "
+                if len(new_value_y) == 1:
+                    new_value_y = new_value_y + " "
+                row_string += f"({new_value_x}, {new_value_y})\t\t"
             r += 1
             print(row_string)
 
