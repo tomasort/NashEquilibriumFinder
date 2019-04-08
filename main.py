@@ -87,7 +87,7 @@ beliefs = test_normal_form.create_random_beliefs(mode='sum')
 print('\n------------------------------------')
 print('Player 1 Expected Payoffs with Player 2 Mixing')
 print('------------------------------------')
-p1_eps = test_normal_form.find_br(player=1, mixing=True, beliefs=beliefs[0])
+p1_eps = test_normal_form.find_br(player=1, mixing=True, beliefs=beliefs[1])
 br = None
 for key, value in p1_eps.items():
     print(f"U({key}, {beliefs[0]}) = {round(value, 3)}")
@@ -106,7 +106,7 @@ print(f"BR({beliefs[0]}) = {br}")
 print('\n------------------------------------')
 print('Player 2 Expected Payoffs with Player 1 Mixing')
 print('------------------------------------')
-p2_eps = test_normal_form.find_br(player=2, mixing=True, beliefs=beliefs[1])
+p2_eps = test_normal_form.find_br(player=2, mixing=True, beliefs=beliefs[0])
 br = None
 for key, value in p2_eps.items():
     print(f"U({key}, {beliefs[1]}) = {round(value, 3)}")
