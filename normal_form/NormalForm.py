@@ -107,6 +107,7 @@ class NormalForm():
             for c in row:
                 new_value_x = str(c[0])
                 new_value_y = str(c[1])
+                
                 while len(new_value_x) < 3:
                     new_value_x = " "+ new_value_x
                 while len(new_value_y) < 3:
@@ -282,10 +283,12 @@ class NormalForm():
             for c in row:
                 new_value_x = str(c[0])
                 new_value_y = str(c[1])
+
                 while len(new_value_x) < 3:
                     new_value_x = " "+ new_value_x
                 while len(new_value_y) < 3:
                     new_value_y = " "+ new_value_y
+                    
                 row_string += f"({new_value_x}, {new_value_y})\t\t"
             r += 1
             print(row_string)
