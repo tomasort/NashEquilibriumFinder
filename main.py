@@ -91,6 +91,9 @@ test_normal_form.print_pure_nash()
 coordinates = ""
 for c in nash_eq_coordinates:
   coordinates += f"(A{c[1] + 1}, B{c[0] + 1})   "
+
+if coordinates == "":
+  coordinates = "None"
 print(f"\nNash Pure Equilibrium(s): {coordinates}")
 
 beliefs = test_normal_form.create_random_beliefs(mode='sum')
