@@ -26,11 +26,10 @@ class NormalForm():
     def __init__(self, mode, rows, columns, lower_limit=-99, upper_limit=99):
         """ Initialize a grid that represents the normal form of a game
 
-            Keyword Arguments:
-
-            mode: random or manual. If 'random' then we generate values in the range (lower_limit, upper_limit)
-            rows: number of rows in the normal form grid (the number of strategies for player 2)
-            columns: number of columsn in the normal for grid (the number of strategies for player 1)
+            Arguments:
+            mode: 'r' for random or 'm' for manual. If 'r' then we generate values in the range (lower_limit, upper_limit)
+            rows: number of rows in the normal form grid (the number of strategies for player 1)
+            columns: number of columns in the normal form grid (the number of strategies for player 2)
             lower_limit: lower limit for the random values for payoffs if the mode is set to random
             upper_limit: upper limit for the random values for payoffs if the mode is set to random
         """
@@ -172,8 +171,8 @@ class NormalForm():
                     br_coordinates = best = None
                     counter = 0
                     multiple_br_values = []
-                    for l in self.grid:
-                        current_value = l[i][player-1]
+                    for row in self.grid:
+                        current_value = row[i][player-1]
                         # in x, y format (columns, row)
                         current_value_coordinates = (i, counter)
                         if best is None or current_value > best:
@@ -202,11 +201,11 @@ class NormalForm():
                 return self.p1_br
             elif player is 2:
                 counter = 0
-                for l in self.grid:
+                for row in self.grid:
                     br_coordinates = best = None
                     multiple_br_values = []
                     for i in range(self.columns):
-                        current_value = l[i][player-1]
+                        current_value = row[i][player-1]
                         # in x, y format (columns, row)
                         current_value_coordinates = (i, counter)
                         if best is None or current_value > best:
@@ -249,8 +248,8 @@ class NormalForm():
                     counter = 0
                     result = 0
                     result_string = ""
-                    for l in self.grid:
-                        p2_payoff = l[i][1]
+                    for row in self.grid:
+                        p2_payoff = row[i][1]
                         b = beliefs[counter]
                         result += b * p2_payoff
                         result_string += f"({b} * {p2_payoff}) "
@@ -305,12 +304,12 @@ class NormalForm():
 
 
     def ep_bpm(self, p1_beliefs, p2_beliefs):
-        # We need to create another grid with the product of the beliefsf
+        # We need to create another grid with the product of the beliefs
         beliefs = []
         for i in range(self.rows):
             row = []
             for j in range(self.columns):
-                row.append(p1_beliefs[j] * p2_beliefs[i])
+                row.append(p1_beliefs[i] * p2_beliefs[j])
             beliefs.append(row)
         # Now we need to do some kind of matrix multiplication between beliefs and self.grid
         # We start with player 1
@@ -347,9 +346,10 @@ class NormalForm():
             if (x - y + w - z) != 0:
                 p = (w - y) / (x - y + w - z)
                 if p < 0 or (1-p) < 0:
-                    print("There are negative probabilities. One or more strategies are be dominated")
+                    print("There are negative probabilities. One or more strategies may be dominated")
+                    return []
             else:
-                print("There is a problem (division by 0). One or more strategies are be dominated")
+                print("There is a problem (division by 0). One or more strategies may be dominated")
                 return []
             p1_strategy = [p, 1-p]
 
@@ -369,9 +369,10 @@ class NormalForm():
             if (x - y + w - z) != 0:
                 q = (w - z) / (x - y + w - z)
                 if q < 0 or (1-q) < 0:
-                    print("There are negative probabilities. One or more strategies are be dominated")
+                    print("There are negative probabilities. One or more strategies may be dominated")
+                    return []
             else:
-                print("There is a problem (division by 0). One or more strategies are be dominated")
+                print("There is a problem (division by 0). One or more strategies may be dominated")
                 return []
             p2_strategy = [q, 1-q]
 

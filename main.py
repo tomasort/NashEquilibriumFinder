@@ -2,20 +2,20 @@
 #  Group Number: 30
 #
 # PROGRAMMER1: Tomas Ortega
-#  PANTHER	ID1: 5677483
+#  PANTHER  ID1: 5677483
  
 # PROGRAMMER2: Pablo Mueller
-#  	PANTHER	ID2: 3283876
+#   PANTHER ID2: 3283876
  
-#  	CLASS: CAP4506	
-#  	SECTION: U01
-#  	SEMESTER: Spring 2019
-#  	CLASSTIME: M/W	6:25-7:45 PM
+#   CLASS: CAP4506  
+#   SECTION: U01
+#   SEMESTER: Spring 2019
+#   CLASSTIME: M/W  6:25-7:45 PM
  
-#  	Project: This program will alow the user to find nash equilibriums and calculate expected payoffs for each player. 
-#  	DUE: Sunday, April	7,	2019 at midnight.							
+#   Project: This program will alow the user to find nash equilibriums and calculate expected payoffs for each player. 
+#   DUE: Sunday, April  7,  2019 at midnight.                           
  
-#  	CERTIFICATION: I certify	that	this	work	is	my own	and	that none	of it is the work of any other	person.
+#   CERTIFICATION: I certify    that    this    work    is  my own  and that none   of it is the work of any other  person.
 #  =============================================================================
 
 import random
@@ -133,7 +133,7 @@ print('\n------------------------------------')
 print('Player 2 Best Response with Player 1 Mixing')
 print('------------------------------------')
 br = "{" + str(br) + "}"
-print(f"BR({from_list_to_beliefs(beliefs[1])}) = {br}")
+print(f"BR({from_list_to_beliefs(beliefs[0])}) = {br}")
 
 print('\n------------------------------------')
 print('Player 1 & 2 Expected Payoffs with both Players Mixing')
