@@ -2,20 +2,20 @@
 #  Group Number: 30
 #
 # PROGRAMMER1: Tomas Ortega
-#  PANTHER	ID1: 5677483
+#  PANTHER  ID1: 5677483
 
 # PROGRAMMER2: Pablo Mueller
-#  	PANTHER	ID2: 3283876
+#   PANTHER ID2: 3283876
 
-#  	CLASS: CAP4506
-#  	SECTION: U01
-#  	SEMESTER: Spring 2019
-#  	CLASSTIME: M/W	6:25-7:45 PM
+#   CLASS: CAP4506
+#   SECTION: U01
+#   SEMESTER: Spring 2019
+#   CLASSTIME: M/W  6:25-7:45 PM
 
-#  	Project: This program will alow the user to find nash equilibriums and calculate expected payoffs for each player.
-#  	DUE: Sunday, Apruk	7,	2019 at midnight.
+#   Project: This program will alow the user to find nash equilibriums and calculate expected payoffs for each player.
+#   DUE: Sunday, Apruk  7,  2019 at midnight.
 
-#  	CERTIFICATION: I certify	that	this	work	is	my own	and	that none	of it is the work of any other	person.
+#   CERTIFICATION: I certify    that    this    work    is  my own  and that none   of it is the work of any other  person.
 #  =============================================================================
 
 import random
@@ -32,10 +32,16 @@ class NormalForm():
             columns: number of columns in the normal form grid (the number of strategies for player 2)
             lower_limit: lower limit for the random values for payoffs if the mode is set to random
             upper_limit: upper limit for the random values for payoffs if the mode is set to random
+            
+            Raises:
+            ValueError: if mode is not 'r' or 'm'
         """
+        if mode not in ['r', 'm']:
+            raise ValueError("Mode must be 'r' for random or 'm' for manual")
+            
         self.rows = rows
         self.columns = columns
-        self.mode = mode  # except if the mode is not 'random' or 'manual'
+        self.mode = mode
         self.lower_limit = lower_limit
         self.upper_limit = upper_limit
         # a list of lists for the rows and columns in the normal form
@@ -163,10 +169,10 @@ class NormalForm():
             Returns:
             A List containing the coordinates of the best strategies for the specifies player.
         """
-        if (player is not 1) and (player is not 2):
+        if (player != 1) and (player != 2):
             raise ValueError("player must be an int with the value of 1 or 2")
         if not mixing:
-            if player is 1:
+            if player == 1:
                 for i in range(self.columns):
                     br_coordinates = best = None
                     counter = 0
@@ -199,7 +205,7 @@ class NormalForm():
                         else:
                             self.p1_br.append(value)
                 return self.p1_br
-            elif player is 2:
+            elif player == 2:
                 counter = 0
                 for row in self.grid:
                     br_coordinates = best = None
@@ -232,7 +238,7 @@ class NormalForm():
                 return self.p2_br
         else:
             expected_payoffs = {}
-            if player is 1:
+            if player == 1:
                 for i in range(self.rows):
                     result = 0
                     result_string = ''
@@ -243,7 +249,7 @@ class NormalForm():
                     key = f"A{i + 1}"
                     expected_payoffs[key] = result
                 return expected_payoffs
-            elif player is 2:
+            elif player == 2:
                 for i in range(self.columns):
                     counter = 0
                     result = 0
@@ -327,6 +333,19 @@ class NormalForm():
         return p1_ep, p2_ep
 
     def get_indifference_probabilities(self):
+        """Calculate the mixed strategy Nash equilibrium for a 2x2 game.
+        
+        If pure Nash equilibria exist (nash_equilibria is not empty), 
+        we don't need to calculate mixed strategies, so return None.
+        
+        Returns:
+            A list of two lists with the mixed strategy probabilities for each player,
+            or None if pure Nash equilibria already exist.
+        """
+        if len(self.nash_equilibria) > 0:
+            # If there are pure Nash equilibria, return None
+            return None
+            
         if len(self.nash_equilibria) == 0:
             # Starting with player 1. We need to find a strategy that makes player 2 indiferent
             # we can make a formula to find p
