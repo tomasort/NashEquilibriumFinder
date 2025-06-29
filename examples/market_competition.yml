@@ -1,0 +1,12 @@
+# Market Competition Game
+# Models price competition between firms
+
+GAME_TYPE: custom
+STRATEGIES: 2 3
+PAYOFFS:
+  (10, 8) (5, 12) (2, 15)
+  (12, 5) (8, 8) (4, 10)
+PLAYER1_STRATEGIES: High Price, Low Price
+PLAYER2_STRATEGIES: High Price, Medium Price, Low Price
+NAME: Market Competition
+DESCRIPTION: Price competition between two firms with asymmetric strategy sets

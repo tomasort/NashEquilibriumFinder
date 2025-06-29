@@ -1,0 +1,13 @@
+# Military Strategy Game
+# Custom 3x3 strategic game
+
+GAME_TYPE: custom
+STRATEGIES: 3 3
+PAYOFFS:
+  (3, 1) (0, 2) (1, 3)
+  (2, 0) (1, 1) (0, 2)
+  (1, 3) (2, 0) (3, 1)
+PLAYER1_STRATEGIES: Attack, Defend, Retreat
+PLAYER2_STRATEGIES: Aggressive, Moderate, Defensive
+NAME: Military Strategy Game
+DESCRIPTION: A strategic military engagement scenario

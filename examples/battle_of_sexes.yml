@@ -1,0 +1,9 @@
+# Battle of the Sexes
+# Coordination game with different preferences
+
+GAME_TYPE: battle_of_sexes
+PARAMS:
+  a: 3
+  b: 2
+NAME: Battle of the Sexes
+DESCRIPTION: A couple wants to coordinate but has different preferences

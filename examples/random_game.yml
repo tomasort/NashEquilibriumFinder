@@ -1,0 +1,10 @@
+# Random 2x2 Game Template
+# Will generate random payoffs within specified range
+
+GAME_TYPE: random
+STRATEGIES: 2 2
+PARAMS:
+  min_value: -5
+  max_value: 10
+NAME: Random Strategy Game
+DESCRIPTION: A randomly generated 2x2 game with bounded payoffs

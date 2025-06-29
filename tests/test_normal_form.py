@@ -175,45 +175,63 @@ class TestIndifferenceProbabilities:
     
     def test_indifference_probabilities_battle_of_sexes(self, battle_of_sexes):
         """Test calculation of mixed strategy Nash equilibrium for Battle of Sexes"""
-        # Clear any existing nash_equilibria
+        # Clear any existing nash_equilibria to force mixed strategy calculation
         battle_of_sexes.nash_equilibria = []
         
-        mixed_strategies = battle_of_sexes.get_indifference_probabilities()
+        # Call with check_pure_nash=False to force mixed strategy calculation
+        mixed_strategies = battle_of_sexes.get_indifference_probabilities(check_pure_nash=False)
+        
+        # Should return a dictionary format
+        assert isinstance(mixed_strategies, dict)
+        assert 'p1_strategy' in mixed_strategies
+        assert 'p2_strategy' in mixed_strategies
+        assert 'error' in mixed_strategies
+        
+        # Should not have errors
+        assert mixed_strategies['error'] is None
         
         # In Battle of Sexes with payoffs ((3,2),(0,0)) and ((0,0),(2,3)),
         # the mixed NE is p = 0.6 for player 1 and q = 0.4 for player 2
-        assert len(mixed_strategies) == 2
-        assert mixed_strategies[0][0] == pytest.approx(0.6)  # p ≈ 0.6
-        assert mixed_strategies[0][1] == pytest.approx(0.4)  # 1-p ≈ 0.4
-        assert mixed_strategies[1][0] == pytest.approx(0.4)  # q ≈ 0.4
-        assert mixed_strategies[1][1] == pytest.approx(0.6)  # 1-q ≈ 0.6
+        p1_strategy = mixed_strategies['p1_strategy']
+        p2_strategy = mixed_strategies['p2_strategy']
+        
+        assert len(p1_strategy) == 2
+        assert len(p2_strategy) == 2
+        assert p1_strategy[0] == pytest.approx(0.6)  # p ≈ 0.6
+        assert p1_strategy[1] == pytest.approx(0.4)  # 1-p ≈ 0.4
+        assert p2_strategy[0] == pytest.approx(0.4)  # q ≈ 0.4
+        assert p2_strategy[1] == pytest.approx(0.6)  # 1-q ≈ 0.6
     
     def test_indifference_probabilities_dominated_strategy(self, dominated_strategy_game):
         """Test calculation of mixed strategy Nash equilibrium with dominated strategies"""
         # Clear any existing nash_equilibria
         dominated_strategy_game.nash_equilibria = []
         
-        # In a game with dominated strategies, we should get an empty result or error message
-        dominated_strategy_game.find_pure_nash_equi()  # First find pure Nash equilibria
-        mixed_strategies = dominated_strategy_game.get_indifference_probabilities()
+        # In a game with dominated strategies, we should get an error message
+        mixed_strategies = dominated_strategy_game.get_indifference_probabilities(check_pure_nash=False)
         
-        # Check that we don't get a valid mixed strategy (since one strategy is dominant)
-        if mixed_strategies:
-            # If we get a mixed strategy, then either p or (1-p) or q or (1-q) should be negative
-            p, not_p = mixed_strategies[0]
-            q, not_q = mixed_strategies[1]
-            assert p < 0 or not_p < 0 or q < 0 or not_q < 0
+        # Should return a dictionary format
+        assert isinstance(mixed_strategies, dict)
+        assert 'error' in mixed_strategies
+        
+        # Should have an error indicating dominated strategies or negative probabilities
+        assert mixed_strategies['error'] is not None
+        assert ('dominated' in mixed_strategies['error'].lower() or 
+                'negative' in mixed_strategies['error'].lower())
     
     def test_indifference_probabilities_with_pure_nash(self, coordination_game):
-        """Test that get_indifference_probabilities returns None when pure Nash equilibria exist"""
+        """Test that get_indifference_probabilities returns appropriate response when pure Nash equilibria exist"""
         # First find pure Nash equilibria
         coordination_game.find_pure_nash_equi()
         
-        # Since we've fixed the implementation to return None when pure Nash equilibria exist
+        # When pure Nash equilibria exist, should return dict with error message
         result = coordination_game.get_indifference_probabilities()
         
-        # The method should return None when pure Nash equilibria exist
-        assert result is None
+        # Should return a dictionary indicating that pure Nash equilibria exist
+        assert isinstance(result, dict)
+        assert 'error' in result
+        assert result['error'] is not None
+        assert 'pure nash equilibria exist' in result['error'].lower()
 
 
 class TestRandomBeliefs:

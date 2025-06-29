@@ -1,0 +1,11 @@
+# Prisoner's Dilemma Game
+# Classic game theory example
+
+GAME_TYPE: prisoners_dilemma
+PARAMS:
+  t: 5
+  r: 3
+  p: 1
+  s: 0
+NAME: Prisoner's Dilemma
+DESCRIPTION: Two prisoners must decide whether to cooperate or defect
