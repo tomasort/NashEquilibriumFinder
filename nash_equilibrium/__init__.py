@@ -9,13 +9,17 @@ __author__ = "Tomas Ortega and Pablo Mueller"
 __email__ = "contact@nashequilibrium.dev"
 __license__ = "MIT"
 
-from .game_file_parser import GameFileParseError, GameFileParser
+from .parser import GameFileParseError, GameFileParser
 from .game_manager import GameManager
-from .NormalForm import NormalForm
+from .strategic_game import StrategicGame
 from .utils import from_list_to_beliefs, get_coordinates_string
 
+# Backwards compatibility
+NormalForm = StrategicGame
+
 __all__ = [
-    "NormalForm",
+    "StrategicGame",
+    "NormalForm",  # Keep for backwards compatibility
     "GameManager",
     "GameFileParser",
     "GameFileParseError",

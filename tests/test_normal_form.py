@@ -1,11 +1,14 @@
 import numpy as np
 import pytest
 
-from normal_form.NormalForm import NormalForm
+from nash_equilibrium.strategic_game import StrategicGame
+
+# Backwards compatibility alias
+NormalForm = StrategicGame
 
 
 class TestNormalFormInitialization:
-    """Tests for the initialization of the NormalForm class"""
+    """Tests for the initialization of the StrategicGame class"""
 
     def test_init_random_mode(self):
         """Test initialization with random mode"""
@@ -310,7 +313,7 @@ class TestFactoryMethods:
 
     def test_create_prisoners_dilemma_default(self):
         """Test creating Prisoner's Dilemma with default parameters"""
-        from normal_form.NormalForm import create_prisoners_dilemma
+        from nash_equilibrium.strategic_game import create_prisoners_dilemma
         
         game = create_prisoners_dilemma()
         assert game.rows == 2
@@ -327,7 +330,7 @@ class TestFactoryMethods:
 
     def test_create_prisoners_dilemma_custom(self):
         """Test creating Prisoner's Dilemma with custom parameters"""
-        from normal_form.NormalForm import create_prisoners_dilemma
+        from nash_equilibrium.strategic_game import create_prisoners_dilemma
         
         game = create_prisoners_dilemma(t=6, r=4, p=2, s=1)
         payoffs = game.grid
@@ -338,7 +341,7 @@ class TestFactoryMethods:
 
     def test_create_prisoners_dilemma_invalid_params(self):
         """Test that invalid parameters for Prisoner's Dilemma raise ValueError"""
-        from normal_form.NormalForm import create_prisoners_dilemma
+        from nash_equilibrium.strategic_game import create_prisoners_dilemma
         
         # T <= R violates T > R > P > S
         with pytest.raises(ValueError, match="Invalid parameters"):
@@ -350,7 +353,7 @@ class TestFactoryMethods:
 
     def test_create_coordination_game(self):
         """Test creating coordination game"""
-        from normal_form.NormalForm import create_coordination_game
+        from nash_equilibrium.strategic_game import create_coordination_game
         
         game = create_coordination_game(a=5, b=3)
         assert game.rows == 2
@@ -364,7 +367,7 @@ class TestFactoryMethods:
 
     def test_create_battle_of_sexes(self):
         """Test creating battle of sexes game"""
-        from normal_form.NormalForm import create_battle_of_sexes
+        from nash_equilibrium.strategic_game import create_battle_of_sexes
         
         game = create_battle_of_sexes(a=3, b=2)
         assert game.rows == 2
@@ -378,7 +381,7 @@ class TestFactoryMethods:
 
     def test_create_zero_sum_game(self):
         """Test creating zero-sum game"""
-        from normal_form.NormalForm import create_zero_sum_game
+        from nash_equilibrium.strategic_game import create_zero_sum_game
         
         values = [3, -1, 2, 0]
         game = create_zero_sum_game(values=values)
@@ -393,7 +396,7 @@ class TestFactoryMethods:
 
     def test_create_zero_sum_game_invalid_values(self):
         """Test that wrong number of values raises ValueError"""
-        from normal_form.NormalForm import create_zero_sum_game
+        from nash_equilibrium.strategic_game import create_zero_sum_game
         
         with pytest.raises(ValueError, match="Must provide exactly 4 values"):
             create_zero_sum_game(values=[1, 2, 3])

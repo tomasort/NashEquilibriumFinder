@@ -5,8 +5,11 @@ from unittest.mock import MagicMock, patch
 import numpy as np
 import pytest
 
-from normal_form.game_manager import GameManager
-from normal_form.NormalForm import NormalForm
+from nash_equilibrium.game_manager import GameManager
+from nash_equilibrium.strategic_game import StrategicGame
+
+# Backwards compatibility alias
+NormalForm = StrategicGame
 
 
 def test_game_manager_create_game():

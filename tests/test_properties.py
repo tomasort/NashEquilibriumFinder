@@ -8,7 +8,10 @@ predefined test cases and parametrized tests.
 import numpy as np
 import pytest
 
-from normal_form.NormalForm import NormalForm
+from nash_equilibrium.strategic_game import StrategicGame
+
+# Backwards compatibility alias
+NormalForm = StrategicGame
 
 
 def create_test_games():

@@ -3,7 +3,7 @@ Tests for utility functions
 """
 import pytest
 
-from normal_form.utils import (
+from nash_equilibrium.utils import (
     from_list_to_beliefs,
     get_coordinates_string,
     print_section_header,

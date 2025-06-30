@@ -7,7 +7,7 @@ the refactored Nash Equilibrium Finder can be used in a web context.
 
 from flask import Flask, jsonify, request
 
-from normal_form.game_manager import GameManager
+from nash_equilibrium.game_manager import GameManager
 
 app = Flask(__name__)
 game_manager = GameManager()

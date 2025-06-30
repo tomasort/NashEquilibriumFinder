@@ -12,8 +12,8 @@ from pathlib import Path
 
 import click
 
-from normal_form.game_file_parser import GameFileParseError, GameFileParser
-from normal_form.utils import (
+from nash_equilibrium.parser import GameFileParseError, GameFileParser
+from nash_equilibrium.utils import (
     from_list_to_beliefs,
     get_coordinates_string,
     print_section_header,

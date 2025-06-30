@@ -1,8 +1,11 @@
-from normal_form.NormalForm import NormalForm
+from nash_equilibrium.strategic_game import StrategicGame
 import os
 import sys
 
 import pytest
+
+# Backwards compatibility alias
+NormalForm = StrategicGame
 
 # Add the project root directory to the Python path to allow imports
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))

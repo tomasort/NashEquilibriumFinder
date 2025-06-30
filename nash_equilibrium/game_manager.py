@@ -2,18 +2,21 @@
 Game Manager Module
 
 This module provides a service layer between user interfaces
-(CLI or Web) and the core NormalForm class.
+(CLI or Web) and the core StrategicGame class.
 """
 
 import json
 
-from normal_form.NormalForm import (
-    NormalForm,
+from nash_equilibrium.strategic_game import (
+    StrategicGame,
     create_battle_of_sexes,
     create_coordination_game,
     create_prisoners_dilemma,
     create_zero_sum_game,
 )
+
+# Backwards compatibility
+NormalForm = StrategicGame
 
 
 class GameManager:

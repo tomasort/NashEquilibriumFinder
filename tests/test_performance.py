@@ -9,7 +9,7 @@ import time
 import numpy as np
 import pytest
 
-from normal_form.NormalForm import NormalForm
+from nash_equilibrium.strategic_game import StrategicGame
 
 
 class TestPerformance:
@@ -18,7 +18,7 @@ class TestPerformance:
     def test_large_game_creation(self):
         """Test creation of large games."""
         start_time = time.time()
-        game = NormalForm(mode="r", rows=10, columns=10)
+        game = StrategicGame(mode="r", rows=10, columns=10)
         game.add_payoffs()
         creation_time = time.time() - start_time
 
@@ -29,7 +29,7 @@ class TestPerformance:
     def test_nash_equilibrium_calculation_performance(self):
         """Test performance of Nash equilibrium calculation."""
         # Create a moderately sized game
-        game = NormalForm(mode="r", rows=5, columns=5)
+        game = StrategicGame(mode="r", rows=5, columns=5)
         game.add_payoffs()
 
         start_time = time.time()
@@ -41,7 +41,7 @@ class TestPerformance:
 
     def test_expected_payoff_calculation_performance(self):
         """Test performance of expected payoff calculations."""
-        game = NormalForm(mode="r", rows=8, columns=8)
+        game = StrategicGame(mode="r", rows=8, columns=8)
         game.add_payoffs()
 
         # Random mixed strategies
@@ -63,7 +63,7 @@ class TestPerformance:
         tracemalloc.start()
 
         # Create a large game
-        game = NormalForm(mode="r", rows=20, columns=20)
+        game = StrategicGame(mode="r", rows=20, columns=20)
         game.add_payoffs()
 
         current, peak = tracemalloc.get_traced_memory()
@@ -74,7 +74,7 @@ class TestPerformance:
 
     def test_cache_effectiveness(self):
         """Test that caching improves performance."""
-        game = NormalForm(mode="r", rows=6, columns=6)
+        game = StrategicGame(mode="r", rows=6, columns=6)
         game.add_payoffs()
 
         p1_strategy = [1 / 6] * 6

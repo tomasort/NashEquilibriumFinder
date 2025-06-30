@@ -2,14 +2,14 @@
 Game File Parser
 
 This module provides functionality to parse game definition files
-and create NormalForm games from them.
+and create StrategicGame games from them.
 """
 
 import os
 import re
 from typing import Any, Dict, List, Tuple
 
-from normal_form.game_manager import GameManager
+from nash_equilibrium.game_manager import GameManager
 
 
 class GameFileParseError(Exception):

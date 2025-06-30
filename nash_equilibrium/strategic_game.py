@@ -46,7 +46,7 @@ def create_prisoners_dilemma(t=5, r=3, p=1, s=0):
 
     payoff_matrix = [[(r, r), (s, t)], [(t, s), (p, p)]]
 
-    return NormalForm(mode="d", payoff_matrix=payoff_matrix)
+    return StrategicGame(mode="d", payoff_matrix=payoff_matrix)
 
 
 def create_coordination_game(a=5, b=3):
@@ -66,7 +66,7 @@ def create_coordination_game(a=5, b=3):
 
     payoff_matrix = [[(a, a), (0, 0)], [(0, 0), (b, b)]]
 
-    return NormalForm(mode="d", payoff_matrix=payoff_matrix)
+    return StrategicGame(mode="d", payoff_matrix=payoff_matrix)
 
 
 def create_battle_of_sexes(a=3, b=2):
@@ -86,7 +86,7 @@ def create_battle_of_sexes(a=3, b=2):
 
     payoff_matrix = [[(a, b), (0, 0)], [(0, 0), (b, a)]]
 
-    return NormalForm(mode="d", payoff_matrix=payoff_matrix)
+    return StrategicGame(mode="d", payoff_matrix=payoff_matrix)
 
 
 def create_zero_sum_game(values=None):
@@ -110,10 +110,10 @@ def create_zero_sum_game(values=None):
         [(values[2], -values[2]), (values[3], -values[3])],
     ]
 
-    return NormalForm(mode="d", payoff_matrix=payoff_matrix)
+    return StrategicGame(mode="d", payoff_matrix=payoff_matrix)
 
 
-class NormalForm:
+class StrategicGame:
     def __init__(self, mode="d", rows=None, columns=None, payoff_matrix=None, lower_limit=-99, upper_limit=99):
         """ Initialize a grid that represents the normal form of a game
 
@@ -864,8 +864,8 @@ class NormalForm:
         return f"NormalForm(mode='{self.mode}', rows={self.rows}, columns={self.columns})"
 
     def __eq__(self, other):
-        """Check equality between two NormalForm games."""
-        if not isinstance(other, NormalForm):
+        """Check equality between two StrategicGame games."""
+        if not isinstance(other, StrategicGame):
             return False
         return self.grid == other.grid and self.rows == other.rows and self.columns == other.columns
 

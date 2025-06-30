@@ -2,7 +2,7 @@
 Tests for the Game File Parser
 
 This module contains comprehensive tests for parsing game definition files
-in YAML format and creating NormalForm games from them.
+in YAML format and creating StrategicGame games from them.
 """
 
 import os
@@ -11,7 +11,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from normal_form.game_file_parser import (
+from nash_equilibrium.parser import (
     GameFileParseError,
     GameFileParser,
     parse_game_file,
@@ -585,7 +585,7 @@ PAYOFFS:
         finally:
             os.unlink(filename)
 
-    @patch("normal_form.game_file_parser.GameManager")
+    @patch("nash_equilibrium.parser.GameManager")
     def test_parser_uses_game_manager(self, mock_game_manager_class):
         """Test that the parser correctly uses the GameManager."""
         # Set up mock

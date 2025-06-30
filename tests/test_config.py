@@ -8,7 +8,7 @@ from unittest.mock import patch
 
 import pytest
 
-from normal_form.config import DEFAULT_CONFIG, get_config, get_logger, setup_logging
+from nash_equilibrium.config import DEFAULT_CONFIG, get_config, get_logger, setup_logging
 
 
 class TestDefaultConfig:
