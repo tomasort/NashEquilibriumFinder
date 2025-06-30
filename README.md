@@ -172,8 +172,6 @@ NAME: Prisoner's Dilemma
 DESCRIPTION: Classic game theory example
 ```
 
-### Custom Payoff Matrix
-
 ```yaml
 # Custom game with explicit payoff matrix
 GAME_TYPE: custom
@@ -183,8 +181,6 @@ PAYOFFS:
 NAME: Custom Game
 DESCRIPTION: Game with explicit payoffs
 ```
-
-### Random Games
 
 ```yaml
 # Randomly generated game
@@ -252,6 +248,98 @@ pytest
 
 ```bash
 pytest --cov=normal_form
+```
+
+## Advanced Features
+
+### Strategy Dominance Analysis
+```python
+from normal_form import NormalForm
+
+# Create a game
+game = NormalForm(mode='d', payoff_matrix=[
+    [(4,1), (0,0)], 
+    [(3,0), (1,1)]
+])
+
+# Check for dominant strategies
+player1_dominated = game.get_dominated_strategies(player=1)
+print(f"Player 1 dominated strategies: {player1_dominated}")
+
+# Check if a specific strategy is dominant
+is_dominant = game.is_dominant_strategy(strategy_index=0, player=1)
+print(f"Strategy A1 is dominant: {is_dominant}")
+```
+
+### Regret Analysis
+```python
+# Calculate regret for given strategies
+p1_strategy = [0.6, 0.4]
+p2_strategy = [0.3, 0.7]
+
+p1_regret, p2_regret = game.calculate_regret(p1_strategy, p2_strategy)
+print(f"Player 1 regret: {p1_regret:.3f}")
+print(f"Player 2 regret: {p2_regret:.3f}")
+```
+
+### Performance Optimization
+The library includes performance optimizations:
+- Caching for expensive calculations
+- Numpy integration for numerical operations
+- Efficient algorithms for large games
+
+### Type Hints and Validation
+```python
+# Input validation
+try:
+    game.validate_strategy([0.6, 0.3], player=1)  # Won't sum to 1
+except ValueError as e:
+    print(f"Invalid strategy: {e}")
+
+# Game structure validation
+game.validate_game_structure()
+```
+
+## Development
+
+### Code Quality Tools
+The project uses several code quality tools:
+
+```bash
+# Format code
+black .
+
+# Check style
+flake8 .
+
+# Type checking
+mypy normal_form/
+
+# Security analysis
+bandit -r normal_form/
+```
+
+### Pre-commit Hooks
+Install pre-commit hooks for automatic code quality checks:
+
+```bash
+pip install pre-commit
+pre-commit install
+```
+
+### Performance Testing
+Run performance tests:
+
+```bash
+pytest tests/test_performance.py -v
+```
+
+### Property-Based Testing
+Run property-based tests with hypothesis:
+
+```bash
+pip install hypothesis
+pytest tests/test_properties.py -v
 ```
 
 ## Contributing

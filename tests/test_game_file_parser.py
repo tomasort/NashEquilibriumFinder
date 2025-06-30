@@ -5,28 +5,33 @@ This module contains comprehensive tests for parsing game definition files
 in YAML format and creating NormalForm games from them.
 """
 
-import pytest
-import tempfile
 import os
-from unittest.mock import patch, MagicMock
+import tempfile
+from unittest.mock import MagicMock, patch
 
-from normal_form.game_file_parser import GameFileParser, GameFileParseError, parse_game_file
+import pytest
+
+from normal_form.game_file_parser import (
+    GameFileParseError,
+    GameFileParser,
+    parse_game_file,
+)
 
 
 class TestGameFileParser:
     """Test cases for the GameFileParser class."""
-    
+
     def setup_method(self):
         """Set up test fixtures before each test method."""
         self.parser = GameFileParser()
-    
+
     def create_temp_file(self, content):
         """Helper method to create a temporary file with given content."""
-        temp_file = tempfile.NamedTemporaryFile(mode='w', suffix='.yml', delete=False)
+        temp_file = tempfile.NamedTemporaryFile(mode="w", suffix=".yml", delete=False)
         temp_file.write(content)
         temp_file.close()
         return temp_file.name
-    
+
     def teardown_method(self):
         """Clean up after each test method."""
         # Clean up any temporary files created during tests
@@ -35,16 +40,16 @@ class TestGameFileParser:
 
 class TestBasicParsing:
     """Test basic file parsing functionality."""
-    
+
     def setup_method(self):
         self.parser = GameFileParser()
-    
+
     def create_temp_file(self, content):
-        temp_file = tempfile.NamedTemporaryFile(mode='w', suffix='.yml', delete=False)
+        temp_file = tempfile.NamedTemporaryFile(mode="w", suffix=".yml", delete=False)
         temp_file.write(content)
         temp_file.close()
         return temp_file.name
-    
+
     def test_parse_prisoners_dilemma(self):
         """Test parsing a Prisoner's Dilemma game."""
         content = """
@@ -69,7 +74,7 @@ DESCRIPTION: Classic game theory example
             assert game.grid[1][1] == (1, 1)  # (Defect, Defect)
         finally:
             os.unlink(filename)
-    
+
     def test_parse_battle_of_sexes(self):
         """Test parsing a Battle of the Sexes game."""
         content = """
@@ -90,7 +95,7 @@ NAME: Battle of the Sexes
             assert game.grid[1][1] == (2, 4)
         finally:
             os.unlink(filename)
-    
+
     def test_parse_coordination_game(self):
         """Test parsing a Coordination game."""
         content = """
@@ -109,7 +114,7 @@ PARAMS:
             assert game.grid[1][1] == (3, 3)
         finally:
             os.unlink(filename)
-    
+
     def test_parse_zero_sum_game(self):
         """Test parsing a Zero-Sum game."""
         content = """
@@ -129,7 +134,7 @@ PARAMS:
                     assert cell[0] + cell[1] == 0
         finally:
             os.unlink(filename)
-    
+
     def test_parse_custom_game(self):
         """Test parsing a custom game with direct payoff matrix."""
         content = """
@@ -151,7 +156,7 @@ NAME: Custom Game
             assert game.grid[1][1] == (1, 1)
         finally:
             os.unlink(filename)
-    
+
     def test_parse_random_game(self):
         """Test parsing a random game."""
         content = """
@@ -178,16 +183,16 @@ PARAMS:
 
 class TestParsingEdgeCases:
     """Test edge cases and error conditions in parsing."""
-    
+
     def setup_method(self):
         self.parser = GameFileParser()
-    
+
     def create_temp_file(self, content):
-        temp_file = tempfile.NamedTemporaryFile(mode='w', suffix='.yml', delete=False)
+        temp_file = tempfile.NamedTemporaryFile(mode="w", suffix=".yml", delete=False)
         temp_file.write(content)
         temp_file.close()
         return temp_file.name
-    
+
     def test_parse_with_comments(self):
         """Test parsing files with various comment styles."""
         content = """
@@ -209,7 +214,7 @@ PARAMS:
             assert game.columns == 2
         finally:
             os.unlink(filename)
-    
+
     def test_parse_with_extra_whitespace(self):
         """Test parsing files with extra whitespace and blank lines."""
         content = """
@@ -219,7 +224,7 @@ GAME_TYPE: coordination
 
 PARAMS:
   a: 5
-  
+
   b: 3
 
 
@@ -232,7 +237,7 @@ NAME: Test Game
             assert game_id is not None
         finally:
             os.unlink(filename)
-    
+
     def test_parse_case_insensitive_keys(self):
         """Test that keys are case-insensitive."""
         content = """
@@ -250,7 +255,7 @@ name: Test Game
             assert game_id is not None
         finally:
             os.unlink(filename)
-    
+
     def test_parse_float_parameters(self):
         """Test parsing parameters with float values."""
         content = """
@@ -267,7 +272,7 @@ PARAMS:
             assert game_id is not None
         finally:
             os.unlink(filename)
-    
+
     def test_parse_negative_payoffs(self):
         """Test parsing games with negative payoffs."""
         content = """
@@ -284,7 +289,7 @@ PAYOFFS:
             assert game.grid[1][1] == (-3, 2)
         finally:
             os.unlink(filename)
-    
+
     def test_parse_large_payoff_matrix(self):
         """Test parsing a larger payoff matrix."""
         content = """
@@ -307,21 +312,21 @@ PAYOFFS:
 
 class TestErrorHandling:
     """Test error handling and validation."""
-    
+
     def setup_method(self):
         self.parser = GameFileParser()
-    
+
     def create_temp_file(self, content):
-        temp_file = tempfile.NamedTemporaryFile(mode='w', suffix='.yml', delete=False)
+        temp_file = tempfile.NamedTemporaryFile(mode="w", suffix=".yml", delete=False)
         temp_file.write(content)
         temp_file.close()
         return temp_file.name
-    
+
     def test_missing_file(self):
         """Test error when file doesn't exist."""
         with pytest.raises(FileNotFoundError):
             self.parser.parse_file("nonexistent_file.yml")
-    
+
     def test_missing_game_type(self):
         """Test error when GAME_TYPE is missing."""
         content = """
@@ -334,7 +339,7 @@ PARAMS:
                 self.parser.parse_file(filename)
         finally:
             os.unlink(filename)
-    
+
     def test_unknown_game_type(self):
         """Test error when GAME_TYPE is unknown."""
         content = """
@@ -346,7 +351,7 @@ GAME_TYPE: unknown_game
                 self.parser.parse_file(filename)
         finally:
             os.unlink(filename)
-    
+
     def test_invalid_strategies_format(self):
         """Test error when STRATEGIES format is invalid."""
         content = """
@@ -359,7 +364,7 @@ STRATEGIES: invalid
                 self.parser.parse_file(filename)
         finally:
             os.unlink(filename)
-    
+
     def test_missing_payoffs_for_custom_game(self):
         """Test error when PAYOFFS is missing for custom game."""
         content = """
@@ -372,7 +377,7 @@ NAME: Test Game
                 self.parser.parse_file(filename)
         finally:
             os.unlink(filename)
-    
+
     def test_missing_strategies_for_random_game(self):
         """Test error when STRATEGIES is missing for random game."""
         content = """
@@ -386,7 +391,7 @@ PARAMS:
                 self.parser.parse_file(filename)
         finally:
             os.unlink(filename)
-    
+
     def test_invalid_payoff_format(self):
         """Test error when payoff format is invalid."""
         content = """
@@ -400,7 +405,7 @@ PAYOFFS:
                 self.parser.parse_file(filename)
         finally:
             os.unlink(filename)
-    
+
     def test_malformed_payoff_pairs(self):
         """Test error when payoff pairs are malformed."""
         content = """
@@ -414,7 +419,7 @@ PAYOFFS:
                 self.parser.parse_file(filename)
         finally:
             os.unlink(filename)
-    
+
     def test_unknown_top_level_key(self):
         """Test error when unknown top-level key is used."""
         content = """
@@ -429,7 +434,7 @@ PARAMS:
                 self.parser.parse_file(filename)
         finally:
             os.unlink(filename)
-    
+
     def test_unexpected_content_outside_section(self):
         """Test error when content appears outside of valid sections."""
         content = """
@@ -448,16 +453,16 @@ unexpected content here
 
 class TestValidation:
     """Test file validation functionality."""
-    
+
     def setup_method(self):
         self.parser = GameFileParser()
-    
+
     def create_temp_file(self, content):
-        temp_file = tempfile.NamedTemporaryFile(mode='w', suffix='.yml', delete=False)
+        temp_file = tempfile.NamedTemporaryFile(mode="w", suffix=".yml", delete=False)
         temp_file.write(content)
         temp_file.close()
         return temp_file.name
-    
+
     def test_validate_valid_file(self):
         """Test validation of a valid file."""
         content = """
@@ -474,7 +479,7 @@ PARAMS:
             assert len(warnings) == 0
         finally:
             os.unlink(filename)
-    
+
     def test_validate_invalid_file(self):
         """Test validation of an invalid file."""
         content = """
@@ -487,7 +492,7 @@ GAME_TYPE: unknown_type
             assert "Unknown game type" in warnings[0]
         finally:
             os.unlink(filename)
-    
+
     def test_validate_missing_file(self):
         """Test validation of a missing file."""
         warnings = self.parser.validate_file("nonexistent.yml")
@@ -497,13 +502,13 @@ GAME_TYPE: unknown_type
 
 class TestFunctionWrapper:
     """Test the simple function wrapper."""
-    
+
     def create_temp_file(self, content):
-        temp_file = tempfile.NamedTemporaryFile(mode='w', suffix='.yml', delete=False)
+        temp_file = tempfile.NamedTemporaryFile(mode="w", suffix=".yml", delete=False)
         temp_file.write(content)
         temp_file.close()
         return temp_file.name
-    
+
     def test_parse_game_file_function(self):
         """Test the parse_game_file wrapper function."""
         content = """
@@ -522,7 +527,7 @@ PARAMS:
             assert game.columns == 2
         finally:
             os.unlink(filename)
-    
+
     def test_parse_game_file_error(self):
         """Test the function wrapper with invalid input."""
         with pytest.raises(FileNotFoundError):
@@ -531,16 +536,16 @@ PARAMS:
 
 class TestComplexScenarios:
     """Test complex scenarios and integration cases."""
-    
+
     def setup_method(self):
         self.parser = GameFileParser()
-    
+
     def create_temp_file(self, content):
-        temp_file = tempfile.NamedTemporaryFile(mode='w', suffix='.yml', delete=False)
+        temp_file = tempfile.NamedTemporaryFile(mode="w", suffix=".yml", delete=False)
         temp_file.write(content)
         temp_file.close()
         return temp_file.name
-    
+
     def test_parse_file_with_all_metadata(self):
         """Test parsing a file with all possible metadata fields."""
         content = """
@@ -562,7 +567,7 @@ PLAYER2_STRATEGIES: Opera, Football
             # (even though custom strategy names aren't fully implemented)
         finally:
             os.unlink(filename)
-    
+
     def test_parse_asymmetric_game(self):
         """Test parsing an asymmetric game (different number of strategies)."""
         content = """
@@ -579,15 +584,15 @@ PAYOFFS:
             assert game.columns == 3
         finally:
             os.unlink(filename)
-    
-    @patch('normal_form.game_file_parser.GameManager')
+
+    @patch("normal_form.game_file_parser.GameManager")
     def test_parser_uses_game_manager(self, mock_game_manager_class):
         """Test that the parser correctly uses the GameManager."""
         # Set up mock
         mock_game_manager = MagicMock()
         mock_game_manager_class.return_value = mock_game_manager
         mock_game_manager.create_common_game.return_value = ("test_id", MagicMock())
-        
+
         content = """
 GAME_TYPE: prisoners_dilemma
 PARAMS:
@@ -600,27 +605,25 @@ PARAMS:
         try:
             parser = GameFileParser()
             game_id, game = parser.parse_file(filename)
-            
+
             # Verify that GameManager was used correctly
-            mock_game_manager.create_common_game.assert_called_once_with(
-                'prisoners_dilemma', t=5, r=3, p=1, s=0
-            )
+            mock_game_manager.create_common_game.assert_called_once_with("prisoners_dilemma", t=5, r=3, p=1, s=0)
         finally:
             os.unlink(filename)
 
 
 class TestAdvancedScenarios:
     """Test advanced parsing scenarios and edge cases."""
-    
+
     def setup_method(self):
         self.parser = GameFileParser()
-    
+
     def create_temp_file(self, content):
-        temp_file = tempfile.NamedTemporaryFile(mode='w', suffix='.yml', delete=False)
+        temp_file = tempfile.NamedTemporaryFile(mode="w", suffix=".yml", delete=False)
         temp_file.write(content)
         temp_file.close()
         return temp_file.name
-    
+
     def test_parse_empty_list_parameter(self):
         """Test parsing parameters with empty lists."""
         content = """
@@ -635,7 +638,7 @@ PARAMS:
                 self.parser.parse_file(filename)
         finally:
             os.unlink(filename)
-    
+
     def test_parse_mixed_case_game_type(self):
         """Test parsing with mixed case game type."""
         content = """
@@ -654,7 +657,7 @@ PARAMS:
             assert game.columns == 2
         finally:
             os.unlink(filename)
-    
+
     def test_parse_complex_inline_comments(self):
         """Test parsing with complex inline comments including special characters."""
         content = """
@@ -672,7 +675,7 @@ NAME: Complex # Comment # Game
             assert game.grid[1][1] == (3, 3)
         finally:
             os.unlink(filename)
-    
+
     def test_parse_list_with_floats_and_negatives(self):
         """Test parsing lists with mixed float and negative values."""
         content = """
@@ -687,7 +690,7 @@ PARAMS:
             # The zero-sum factory method should handle float values
         finally:
             os.unlink(filename)
-    
+
     def test_parse_list_with_spaces(self):
         """Test parsing lists with various spacing patterns."""
         content = """
@@ -701,7 +704,7 @@ PARAMS:
             assert game_id is not None
         finally:
             os.unlink(filename)
-    
+
     def test_parse_payoffs_with_negative_and_zero(self):
         """Test parsing payoff matrices with negative values and zeros."""
         content = """
@@ -718,7 +721,7 @@ PAYOFFS:
             assert game.grid[1][1] == (-2, 4)
         finally:
             os.unlink(filename)
-    
+
     def test_parse_large_asymmetric_matrix(self):
         """Test parsing a larger asymmetric game matrix."""
         content = """
@@ -738,7 +741,7 @@ PAYOFFS:
             assert game.grid[2][3] == (23, 24)
         finally:
             os.unlink(filename)
-    
+
     def test_parse_random_with_float_bounds(self):
         """Test parsing random game with float bounds."""
         content = """
@@ -756,7 +759,7 @@ PARAMS:
             assert game.columns == 3
         finally:
             os.unlink(filename)
-    
+
     def test_parse_all_metadata_fields(self):
         """Test parsing with all possible metadata fields populated."""
         content = """
@@ -784,16 +787,16 @@ PLAYER2_STRATEGIES: Opera, Football
 
 class TestErrorHandlingAdvanced:
     """Advanced error handling test cases."""
-    
+
     def setup_method(self):
         self.parser = GameFileParser()
-    
+
     def create_temp_file(self, content):
-        temp_file = tempfile.NamedTemporaryFile(mode='w', suffix='.yml', delete=False)
+        temp_file = tempfile.NamedTemporaryFile(mode="w", suffix=".yml", delete=False)
         temp_file.write(content)
         temp_file.close()
         return temp_file.name
-    
+
     def test_invalid_list_format(self):
         """Test error handling for malformed list parameters."""
         content = """
@@ -810,7 +813,7 @@ PARAMS:
             pass  # Expected to fail at some point
         finally:
             os.unlink(filename)
-    
+
     def test_unclosed_list_parameter(self):
         """Test error handling for unclosed list brackets."""
         content = """
@@ -824,7 +827,7 @@ PARAMS:
                 self.parser.parse_file(filename)
         finally:
             os.unlink(filename)
-    
+
     def test_invalid_payoff_tuple_format(self):
         """Test error handling for various invalid payoff tuple formats."""
         content = """
@@ -838,7 +841,7 @@ PAYOFFS:
                 self.parser.parse_file(filename)
         finally:
             os.unlink(filename)
-    
+
     def test_inconsistent_payoff_row_lengths(self):
         """Test error handling for inconsistent payoff matrix row lengths."""
         content = """
@@ -856,7 +859,7 @@ PAYOFFS:
             pass  # This is also acceptable
         finally:
             os.unlink(filename)
-    
+
     def test_empty_payoff_section(self):
         """Test error handling for empty payoff section."""
         content = """
@@ -869,7 +872,7 @@ PAYOFFS:
                 self.parser.parse_file(filename)
         finally:
             os.unlink(filename)
-    
+
     def test_missing_required_parameters(self):
         """Test that missing parameters use default values (which is the current behavior)."""
         # Since the factory methods provide defaults, missing parameters should not cause errors
@@ -879,7 +882,7 @@ PAYOFFS:
             ("coordination", "PARAMS:\n  a: 5"),  # missing b, should use default
             ("battle_of_sexes", "PARAMS:\n  a: 3"),  # missing b, should use default
         ]
-        
+
         for game_type, incomplete_params in test_cases:
             content = f"""
 GAME_TYPE: {game_type}
