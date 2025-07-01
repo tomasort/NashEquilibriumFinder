@@ -1,19 +1,21 @@
 """
 Nash Equilibrium Finder - Web API
 
-This is a simple Flask - based web API that demonstrates how
+This is a simple Flask-based web API that demonstrates how
 the refactored Nash Equilibrium Finder can be used in a web context.
 """
 
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 
 from nash_equilibrium.game_manager import GameManager
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 game_manager = GameManager()
 
 
-@app.route("/api / games", methods=["POST"])
+@app.route("/api/games", methods=["POST"])
 def create_game():
     """
     Create a new game.
@@ -46,7 +48,7 @@ def create_game():
         return jsonify({"error": str(e)}), 400
 
 
-@app.route("/api / common - games", methods=["POST"])
+@app.route("/api/common-games", methods=["POST"])
 def create_common_game():
     """
     Create a common game type.
@@ -72,7 +74,7 @@ def create_common_game():
         return jsonify({"error": str(e)}), 400
 
 
-@app.route("/api / games/<game_id>", methods=["GET"])
+@app.route("/api/games/<game_id>", methods=["GET"])
 def get_game(game_id):
     """
     Get a game by ID.
@@ -91,7 +93,7 @@ def get_game(game_id):
         return jsonify({"error": f"Game with ID {game_id} not found"}), 404
 
 
-@app.route("/api / games/<game_id>/analyze", methods=["GET"])
+@app.route("/api/games/<game_id>/analyze", methods=["GET"])
 def analyze_game(game_id):
     """
     Analyze a game for Nash equilibria.
@@ -118,7 +120,7 @@ def analyze_game(game_id):
         return jsonify({"error": f"Game with ID {game_id} not found"}), 404
 
 
-@app.route("/api / games/<game_id>/expected - payoffs", methods=["POST"])
+@app.route("/api/games/<game_id>/expected-payoffs", methods=["POST"])
 def calculate_expected_payoffs(game_id):
     """
     Calculate expected payoffs with mixed strategies.
@@ -151,7 +153,7 @@ def calculate_expected_payoffs(game_id):
         return jsonify({"error": str(e)}), 400
 
 
-@app.route("/api / games/<game_id>/random - beliefs", methods=["GET"])
+@app.route("/api/games/<game_id>/random-beliefs", methods=["GET"])
 def generate_random_beliefs(game_id):
     """
     Generate random mixed strategies.
@@ -179,5 +181,11 @@ def generate_random_beliefs(game_id):
         return jsonify({"error": str(e)}), 400
 
 
+@app.route("/api/health", methods=["GET"])
+def health_check():
+    """Health check endpoint for Docker containers."""
+    return jsonify({"status": "healthy", "service": "nash-equilibrium-finder"})
+
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0")

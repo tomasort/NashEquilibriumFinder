@@ -33,11 +33,14 @@ Nash Equilibrium Finder is a Python-based tool for analyzing 2-player normal for
 4. [YAML Game Format](#yaml-game-format)
 5. [Web API](#web-api)
 6. [Programmatic Usage](#programmatic-usage)
-7. [Testing](#testing)
-8. [Documentation](#documentation)
-9. [Contributing](#contributing)
+7. [Docker Setup](DOCKER.md)
+8. [Testing](#testing)
+9. [Documentation](#documentation)
+10. [Contributing](#contributing)
 
 ## Installation
+
+### Standard Installation
 
 1. Clone the repository:
 
@@ -47,6 +50,31 @@ cd NashEquilibriumFinder
 ```
 
 2. Install the required dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+### Docker Installation (Recommended)
+
+The project includes Docker configuration for both development and production environments.
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/username/NashEquilibriumFinder.git
+cd NashEquilibriumFinder
+```
+
+2. Start the application using Docker:
+
+```bash
+# For development mode with hot-reloading
+./docker-manage.sh start dev
+
+# For production mode
+./docker-manage.sh start prod
+```
 
 ```bash
 pip install -r requirements.txt

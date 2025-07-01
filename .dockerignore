@@ -1,0 +1,27 @@
+# Git files
+.git
+.gitignore
+
+# Node modules
+frontend/node_modules
+frontend/npm-debug.log
+
+# Python virtual environments
+venv
+env
+__pycache__
+*.pyc
+*.pyo
+
+# Build directories
+frontend/build
+frontend/dist
+.pytest_cache
+
+# Editor directories
+.vscode
+.idea
+
+# System files
+.DS_Store
+Thumbs.db
